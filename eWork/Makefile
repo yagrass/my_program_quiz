@@ -1,5 +1,5 @@
 PWD := $(shell pwd)
-SRC := BinaryTree wk01_test
+SRC := BinaryTree wk01_test wk02_test wk03_test wk04_test wk05_test wk06_test
 INC := include
 VPATH = $(SRC) $(INC)
 vpath %.c $(SRC)
@@ -8,26 +8,190 @@ vpath %.h $(INC)
 CC := gcc
 FLAG := -I$(INC) -c
 
+wk06Test_4: wk06Test_4.o
+	$(CC) -o $@ $<
+	@rm -f *.o
+
+wk06Test_4.o: wk06Test_4.c
+	@$(CC) $(FLAG) $<
+
+wk06Test_3: wk06Test_3.o
+	$(CC) -o $@ $<
+	@rm -f *.o
+
+wk06Test_3.o: wk06Test_3.c
+	@$(CC) $(FLAG) $<
+
+wk06Test_2: wk06Test_2.o
+	$(CC) -o $@ $<
+	@rm -f *.o
+
+wk06Test_2.o: wk06Test_2.c
+	@$(CC) $(FLAG) $<
+
+wk06Test_1: wk06Test_1.o
+	$(CC) -o $@ $<
+	@rm -f *.o
+
+wk06Test_1.o: wk06Test_1.c
+	@$(CC) $(FLAG) $<
+
+wk05Test_3: wk05Test_3.o
+	$(CC) -o $@ $<
+	@rm -f *.o
+
+wk05Test_3.o: wk05Test_3.c
+	@$(CC) $(FLAG) $<
+
+wk05Test_2: wk05Test_2.o
+	$(CC) -o $@ $<
+	@rm -f *.o
+
+wk05Test_2.o: wk05Test_2.c
+	@$(CC) $(FLAG) $<
+
+wk05Test_1: wk05Test_1.o
+	$(CC) -o $@ $<
+	@rm -f *.o
+
+wk05Test_1.o: wk05Test_1.c
+	@$(CC) $(FLAG) $<
+
+wk04Test_4: wk04Test_4.o
+	$(CC) -o $@ $<
+	@rm -f *.o
+
+wk04Test_4.o: wk04Test_4.c
+	@$(CC) $(FLAG) $<
+
+wk04Test_3: wk04Test_3.o
+	$(CC) -o $@ $<
+	@rm -f *.o
+
+wk04Test_3.o: wk04Test_3.c
+	@$(CC) $(FLAG) $<
+
+wk04Test_2: wk04Test_2.o
+	$(CC) -o $@ $<
+	@rm -f *.o
+
+wk04Test_2.o: wk04Test_2.c
+	@$(CC) $(FLAG) $<
+
+wk04Test_1: wk04Test_1.o
+	$(CC) -o $@ $<
+	@rm -f *.o
+
+wk04Test_1.o: wk04Test_1.c
+	@$(CC) $(FLAG) $<
+
+wk03Test_5: wk03Test_5.o
+	$(CC) -o $@ $<
+	@rm -f *.o
+
+wk03Test_5.o: wk03Test_5.c
+	@$(CC) $(FLAG) $<
+
+wk03Test_4: wk03Test_4.o
+	$(CC) -o $@ $<
+	@rm -f *.o
+
+wk03Test_4.o: wk03Test_4.c
+	@$(CC) $(FLAG) $<
+
+wk03Test_3: wk03Test_3.o
+	$(CC) -o $@ $<
+	@rm -f *.o
+
+wk03Test_3.o: wk03Test_3.c
+	@$(CC) $(FLAG) $<
+
+wk03Test_1: wk03Test_1.o
+	$(CC) -o $@ $<
+	@rm -f *.o
+
+wk03Test_1.o: wk03Test_1.c
+	@$(CC) $(FLAG) $<
+
+wk02Test_6: wk02Test_6.o
+	$(CC) -o $@ $<
+	@rm -f *.o
+
+wk02Test_6.o: wk02Test_6.c ansWK02Test.h
+	@$(CC) $(FLAG) $<
+
+wk02Test_5: wk02Test_5.o
+	$(CC) -o $@ $<
+	@rm -f *.o
+
+wk02Test_5.o: wk02Test_5.c ansWK02Test.h
+	@$(CC) $(FLAG) $<
+
+wk02Test_4: wk02Test_4.o
+	$(CC) -o $@ $<
+	@rm -f *.o
+
+wk02Test_4.o: wk02Test_4.c ansWK02Test.h
+	@$(CC) $(FLAG) $<
+
+wk02Test_3: wk02Test_3.o
+	$(CC) -o $@ $<
+	@rm -f *.o
+
+wk02Test_3.o: wk02Test_3.c ansWK02Test.h
+	@$(CC) $(FLAG) $<
+
+wk02Test_2_e2: wk02Test_2_e2.o
+	$(CC) -o $@ $<
+	@rm -f *.o
+
+wk02Test_2_e2.o: wk02Test_2_e2.c ansWK02Test.h
+	@$(CC) $(FLAG) $<
+
+wk02Test_2: wk02Test_2.o
+	$(CC) -o $@ $<
+	@rm -f *.o
+
+wk02Test_2.o: wk02Test_2.c ansWK02Test.h
+	@$(CC) $(FLAG) $<
+
+wk02Test_1_ASCII_e2: wk02Test_1_ASCII_e2.o
+	$(CC) -o $@ $<
+	@rm -f *.o
+
+wk02Test_1_ASCII_e2.o: wk02Test_1_ASCII_e2.c 	ansWK02Test.h
+	@$(CC) $(FLAG) $<
+
+wk02Test_1_ASCII: wk02Test_1_ASCII.o
+	$(CC) -o $@ $<
+	@rm -f *.o
+
+wk02Test_1_ASCII.o: wk02Test_1_ASCII.c 	ansWK02Test.h
+	@$(CC) $(FLAG) $<
+
 wk01Test_R: wk01Test_R.o
 	$(CC) -o $@ $<
+	@rm -f *.o
 
 wk01Test_R.o: wk01Test_R.c 	ansWK01Test.h
 	@$(CC) $(FLAG) $<
 
 wk01Test_P: wk01Test_P.o
 	$(CC) -o $@ $<
+	@rm -f *.o
 
 wk01Test_P.o: wk01Test_P.c 	ansWK01Test.h
 	@$(CC) $(FLAG) $<
 
 wk01Test: wk01Test.o
 	$(CC) -o $@ $<
+	@rm -f *.o
 
 wk01Test.o: wk01Test.c 	ansWK01Test.h
 	@$(CC) $(FLAG) $<
 
 bTree: bTree.o
-	@gcc -o $@ $<
+	@$(CC) -o $@ $<
 
 bTree.o: bTree.c tree.h
 	@$(CC) $(FLAG) $<
@@ -35,7 +199,31 @@ bTree.o: bTree.c tree.h
 
 # .PHONY: clean
 clean:
-	rm -f *.o
-	rm -f bTree
-	rm -f wk01Test
-	rm -f wk01Test_P
+	@rm -f *.o
+	@rm -f bTree
+	@rm -f wk01Test
+	@rm -f wk01Test_P
+	@rm -f wk01Test_R
+	@rm -f wk02Test_1_ASCII
+	@rm -f wk02Test_1_ASCII_e2
+	@rm -f wk02Test_2
+	@rm -f wk02Test_2_e2
+	@rm -f wk02Test_3
+	@rm -f wk02Test_4
+	@rm -f wk02Test_5
+	@rm -f wk02Test_6
+	@rm -f wk03Test_1
+	@rm -f wk03Test_3
+	@rm -f wk03Test_4
+	@rm -f wk03Test_5
+	@rm -f wk04Test_1
+	@rm -f wk04Test_2
+	@rm -f wk04Test_3
+	@rm -f wk04Test_4
+	@rm -f wk05Test_1
+	@rm -f wk05Test_2
+	@rm -f wk05Test_3
+	@rm -f wk06Test_1
+	@rm -f wk06Test_2
+	@rm -f wk06Test_3
+	@rm -f wk06Test_4
