@@ -9,6 +9,13 @@ CC := gcc
 CCPP := g++
 FLAG := -I$(INC) -c
 
+513: 513.o
+	$(CC) -o $@ $<
+	@rm -f *.o
+
+513.o: 513.c
+	@$(CC) $(FLAG) $<
+
 cpuid: cpuid.o
 	$(CCPP) -o $@ $<
 	@rm -f *.o
@@ -244,3 +251,4 @@ clean:
 	@rm -f wk06Test_4
 	@rm -f wk07Project
 	@rm -f cpuid
+	@rm -f 513
