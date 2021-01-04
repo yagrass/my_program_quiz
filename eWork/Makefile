@@ -1,12 +1,27 @@
 PWD := $(shell pwd)
-SRC := BinaryTree wk01_test wk02_test wk03_test wk04_test wk05_test wk06_test
+SRC := BinaryTree wk01_test wk02_test wk03_test wk04_test wk05_test wk06_test wk07_project
 INC := include
 VPATH = $(SRC) $(INC)
 vpath %.c $(SRC)
 vpath %.h $(INC)
 
 CC := gcc
+CCPP := g++
 FLAG := -I$(INC) -c
+
+cpuid: cpuid.o
+	$(CCPP) -o $@ $<
+	@rm -f *.o
+
+cpuid.o: cpuid.cpp
+	@$(CCPP) $(FLAG) $<
+
+wk07Project: wk07Project.o
+	$(CC) -o $@ $<
+	@rm -f *.o
+
+wk07Project.o: wk07Project.c
+	@$(CC) $(FLAG) $<
 
 wk06Test_4: wk06Test_4.o
 	$(CC) -o $@ $<
@@ -227,3 +242,5 @@ clean:
 	@rm -f wk06Test_2
 	@rm -f wk06Test_3
 	@rm -f wk06Test_4
+	@rm -f wk07Project
+	@rm -f cpuid
