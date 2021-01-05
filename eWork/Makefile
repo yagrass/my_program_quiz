@@ -9,6 +9,20 @@ CC := gcc
 CCPP := g++
 FLAG := -I$(INC) -c
 
+w75_13: w75_13.o
+	$(CC) -o $@ $<
+	@rm -f *.o
+
+w75_13.o: w75_13.c
+	@$(CC) $(FLAG) $<
+
+clocktime: clocktime.o
+	$(CC) -o $@ $<
+	@rm -f *.o
+
+clocktime.o: clocktime.c
+	@$(CC) $(FLAG) $<
+
 513: 513.o
 	$(CC) -o $@ $<
 	@rm -f *.o
@@ -252,3 +266,5 @@ clean:
 	@rm -f wk07Project
 	@rm -f cpuid
 	@rm -f 513
+	@rm -f clocktime
+	@rm -f w75_13
