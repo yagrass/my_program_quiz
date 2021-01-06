@@ -8,13 +8,21 @@ vpath %.h $(INC)
 CC := gcc
 CCPP := g++
 FLAG := -I$(INC) -c
+FLAGG := -I$(INC) -c -g
+
+w75_13perf: w75_13perf.o
+	$(CC) -o $@ $<
+	@rm -f *.o
+
+w75_13perf.o: w75_13perf.c
+	@$(CC) $(FLAGG) $<
 
 w75_13: w75_13.o
 	$(CC) -o $@ $<
 	@rm -f *.o
 
 w75_13.o: w75_13.c
-	@$(CC) $(FLAG) $<
+	@$(CC) $(FLAGG) $<
 
 clocktime: clocktime.o
 	$(CC) -o $@ $<
@@ -268,3 +276,4 @@ clean:
 	@rm -f 513
 	@rm -f clocktime
 	@rm -f w75_13
+	@rm -f w75_13perf

@@ -8,7 +8,7 @@
 #define MDebug printf
 
 unsigned long eachTimes = 10; // test each vector dot product 10 times
-unsigned long dimRange  = 10; // 000; // test dimension to 10000 
+unsigned long dimRange  = 10; // 10000; // test dimension to 10000 
 typedef int data_t;
 long cpu_freq;
 
@@ -201,6 +201,9 @@ int main(){
             total_cycle = total_cycle + (long)inner1( u, v, i, dest);
             free(u->data);
             free(v->data);
+            free(u);        // yc modify
+            free(v);        // yc modify
+            free(dest);     // yc modify            
         }
         total_cycle = total_cycle/eachTimes;
         fprintf(f,"%lu %llu\n", i, total_cycle);
@@ -219,6 +222,9 @@ int main(){
             total_cycle = total_cycle + (long)inner2( u, v, i, dest);
             free(u->data);
             free(v->data);
+            free(u);        // yc modify
+            free(v);        // yc modify            
+            free(dest);     // yc modify            
         }
         total_cycle = total_cycle/eachTimes;
         fprintf(f,"%lu %llu\n", i, total_cycle);
@@ -237,6 +243,9 @@ int main(){
             total_cycle = total_cycle + (long)inner3( u, v, i, dest);
             free(u->data);
             free(v->data);
+            free(u);        // yc modify
+            free(v);        // yc modify            
+            free(dest);     // yc modify            
         }
         total_cycle = total_cycle/eachTimes;
         fprintf(f,"%lu %llu\n", i, total_cycle);
@@ -255,6 +264,9 @@ int main(){
             total_cycle = total_cycle + (long)inner4( u, v, i, dest);
             free(u->data);
             free(v->data);
+            free(u);        // yc modify
+            free(v);        // yc modify            
+            free(dest);     // yc modify
         }
         total_cycle = total_cycle/eachTimes;
         fprintf(f,"%lu %llu\n", i, total_cycle);

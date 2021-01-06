@@ -1,0 +1,72 @@
+Source: kcachegrind
+Section: kde
+Priority: optional
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+XSBC-Original-Maintainer: Debian/Kubuntu Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>
+Uploaders: Sune Vuorela <sune@debian.org>,
+           Fathi Boudra <fabo@debian.org>,
+           Modestas Vainius <modax@debian.org>,
+           George Kiagiadakis <kiagiadakis.george@gmail.com>,
+           Maximiliano Curia <maxy@debian.org>
+Build-Depends: cmake (>= 2.6~),
+               debhelper (>= 9),
+               extra-cmake-modules (>= 5.28.0~),
+               kdoctools-dev (>= 5.28.0~),
+               libkf5archive-dev (>= 5.28.0~),
+               libkf5config-dev (>= 5.28.0~),
+               libkf5coreaddons-dev (>= 5.28.0~),
+               libkf5i18n-dev (>= 5.28.0~),
+               libkf5kio-dev (>= 5.28.0~),
+               libkf5widgetsaddons-dev (>= 5.28.0~),
+               libkf5xmlgui-dev (>= 5.28.0~),
+               pkg-kde-tools (>= 0.12),
+               qtbase5-dev (>= 5.6.1~),
+               qttools5-dev,
+               qttools5-dev-tools
+Standards-Version: 3.9.6
+Homepage: http://www.kde.org/
+Vcs-Browser: https://code.launchpad.net/~kubuntu-packagers/kubuntu-packaging/+git/kcachegrind
+Vcs-Git: https://git.launchpad.net/~kubuntu-packagers/kubuntu-packaging/+git/kcachegrind
+
+Package: kcachegrind
+Architecture: any
+Section: devel
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Recommends: graphviz, valgrind
+Suggests: kcachegrind-converters, khelpcenter
+Breaks: ${kde-l10n:all}
+Replaces: ${kde-l10n:all}
+Description: visualisation tool for the Valgrind profiler
+ KCachegrind is a visualisation tool for the profiling data generated
+ by calltree, a memory profiling tool for valgrind.  Any executable can be
+ profiled using calltree without being recompiled, including multi-threaded
+ applications, shared libraries, and plugins.
+ .
+ For visualising the output from profiling tools other than Valgrind, several
+ converters can be found in the kcachegrind-converters package.
+ .
+ This package is part of the KDE Software Development Kit module.
+
+Package: kcachegrind-converters
+Architecture: all
+Section: devel
+Depends: php-cli, python, ${misc:Depends}, ${perl:Depends}
+Recommends: kcachegrind
+Description: format converters for KCachegrind profiler visualisation tool
+ This is a collection of scripts for converting the output from several
+ different profiling tools into a format that KCachegrind can display.
+ .
+ KCachegrind is a visualisation tool for the profiling data generated
+ by calltree, a memory profiling tool for valgrind.  Executables can be
+ profiled using calltree without being recompiled, including multi-threaded
+ applications, shared libraries, and plugin architectures.
+ .
+ The included scripts are:
+ .
+  * dprof2calltree: converts the tmon.out output of Perl's Devel::DProf package
+  * hotshot2calltree: converts the pstat output of the hotshot Python profiler
+  * memprof2calltree: converts the memory profiles of memprof
+  * op2calltree: converts the OProfile's output of "opreport -gdf" (v 0.8)
+  * pprof2calltree: converts the pprof output from APD
+ .
+ This package is part of the KDE Software Development Kit module.

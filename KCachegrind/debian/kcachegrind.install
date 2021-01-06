@@ -1,0 +1,16 @@
+usr/bin/kcachegrind
+usr/share/applications/org.kde.kcachegrind.desktop
+usr/share/doc/HTML/*/kcachegrind/
+usr/share/icons/hicolor/128x128/apps/kcachegrind.png
+usr/share/icons/hicolor/32x32/apps/kcachegrind.png
+usr/share/icons/hicolor/48x48/apps/kcachegrind.png
+usr/share/icons/hicolor/64x64/apps/kcachegrind.png
+usr/share/kcachegrind/icons/hicolor/16x16/actions/move.png
+usr/share/kcachegrind/icons/hicolor/16x16/actions/percent.png
+usr/share/kcachegrind/icons/hicolor/22x22/actions/hidetemplates.png
+usr/share/kcachegrind/icons/hicolor/22x22/actions/move.png
+usr/share/kcachegrind/icons/hicolor/22x22/actions/percent.png
+usr/share/kcachegrind/icons/hicolor/32x32/actions/percent.png
+usr/share/kcachegrind/tips
+usr/share/kxmlgui5/kcachegrind/kcachegrindui.rc
+usr/share/locale/

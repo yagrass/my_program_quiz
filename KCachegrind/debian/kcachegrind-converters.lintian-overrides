@@ -1,0 +1,2 @@
+# Using the current php-cli default
+kcachegrind-converters: php-script-but-no-phpX-cli-dep usr/bin/pprof2calltree
