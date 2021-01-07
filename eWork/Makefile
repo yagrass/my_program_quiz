@@ -10,6 +10,19 @@ CCPP := g++
 FLAG := -I$(INC) -c
 FLAGG := -I$(INC) -c -g
 
+w75_13perfLAB: w75_13perfLAB.o clock.o fcyc.o
+	$(CC) -o $@ w75_13perfLAB.o clock.o fcyc.o
+	@rm -f *.o
+
+w75_13perfLAB.o: w75_13perfLAB.c
+	@$(CC) $(FLAG) $<
+
+clock.o: clock.c
+	@$(CC) $(FLAG) $<
+
+fcyc.o: fcyc.c	
+	@$(CC) $(FLAG) $<
+		
 w75_13perf: w75_13perf.o
 	$(CC) -o $@ $<
 	@rm -f *.o
@@ -277,3 +290,4 @@ clean:
 	@rm -f clocktime
 	@rm -f w75_13
 	@rm -f w75_13perf
+	@rm -f w75_13perfLAB

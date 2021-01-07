@@ -9,7 +9,7 @@
 #define MDebug printf
 
 unsigned long eachTimes = 10; // test each vector dot product 10 times
-unsigned long dimRange  = 1000; // 10000; // test dimension to 10000 
+unsigned long dimRange  = 10000; // 10000; // test dimension to 10000 
 typedef int data_t;
 long cpu_freq;
 
@@ -93,7 +93,6 @@ float inner1(vec_ptr u, vec_ptr v, long length, data_t *dest)
     struct timespec temp = diff(start, end);
     time_used = temp.tv_sec + (double) temp.tv_nsec / 1000000000.0;
 
-    MDebug("\t(%ld.%09ld\n", temp.tv_sec, temp.tv_nsec);
     //printf("Time = %f\n", time_used);
     cyc = time_used*cpu_freq;
     float CPE = cyc/length;
@@ -176,7 +175,6 @@ float inner4(vec_ptr u, vec_ptr v, long length, data_t *dest)
     struct timespec temp = diff(start, end);
     time_used = temp.tv_sec + (double) temp.tv_nsec / 1000000000.0;
 
-    MDebug("\t(%ld.%09ld\n", temp.tv_sec, temp.tv_nsec);
     //printf("Time = %f\n", time_used);
     cyc = time_used*cpu_freq;
     float CPE = cyc/length;
