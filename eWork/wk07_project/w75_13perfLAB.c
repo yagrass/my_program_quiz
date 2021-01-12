@@ -2,9 +2,9 @@
 #include <time.h>
 #include <stdlib.h>
 #include <time.h>
-#include <unistd.h>
 
 #include "clock.h"
+#include "fcyc.h"
 
 #define MDebug printf
 
@@ -75,12 +75,70 @@ data_t getelement(vec_ptr v, int i){
     return v->data[i];
 }
 
+#define PERFORMANCE_LAB
+
+
+typedef void (*loop_test_func)(long length, data_t *src_v1, data_t *src_v2, data_t *dest, vec_ptr u, vec_ptr v);
+
+void func_wrapper(void *arglist[]) {
+  loop_test_func f = (loop_test_func)arglist[0];
+  long length = *((long *)arglist[1]);
+  data_t *src_v1 = (data_t *)arglist[2];    
+  data_t *src_v2 = (data_t *)arglist[3];
+  data_t *dest = (data_t *)arglist[4];
+  vec_ptr u = (vec_ptr)arglist[5];
+  vec_ptr v = (vec_ptr)arglist[6];
+
+  (*f)(length, src_v1, src_v2, dest, u, v);
+
+  return;
+}
+
+#define FUNC_DECLARE(name) void ##name##(long length, data_t *src_v1, data_t *src_v2, data_t *dest, vec_ptr u, vec_ptr v)
+
+void for_1(long length, data_t *src_v1, data_t *src_v2, data_t *dest, vec_ptr u, vec_ptr v)
+{
+    for (long i = 0; i < getlength(u);  i++ ) 
+    {
+      data_t ele1 = getelement(u, i);
+      data_t ele2 = getelement(v, i);
+      *dest = *dest + ele1 + ele2;
+    }    
+}
+
+void for_2(long length, data_t *src_v1, data_t *src_v2, data_t *dest, vec_ptr u, vec_ptr v)
+{
+    for (long i = 0; i < getlength(u);  i++ ) 
+    {
+      data_t ele2 = getelement(v, i);
+      *dest = *dest + src_v1[i] + ele2;
+    }
+}
+
+void for_3(long length, data_t *src_v1, data_t *src_v2, data_t *dest, vec_ptr u, vec_ptr v)
+{
+    for (long i = 0; i < getlength(u);  i++ ) 
+    {
+      *dest = *dest + src_v1[i] + src_v2[i];
+    }   
+}
+
+void for_4(long length, data_t *src_v1, data_t *src_v2, data_t *dest, vec_ptr u, vec_ptr v)
+{
+    data_t sum = 0;
+    for (long i = 0; i < length;  i++ ) {
+      sum = sum + src_v1[i] + src_v2[i];
+    }
+    *dest = sum;
+}
+
 float inner1(vec_ptr u, vec_ptr v, long length, data_t *dest)
 {
     struct timespec start, end;
     double time_used;
     double cyc =0;
 
+#ifndef PERFORMANCE_LAB 
     clock_gettime(CLOCK_MONOTONIC, &start);
     for (long i = 0; i < getlength(u);  i++ ) 
     {
@@ -96,6 +154,21 @@ float inner1(vec_ptr u, vec_ptr v, long length, data_t *dest)
     //printf("Time = %f\n", time_used);
     cyc = time_used*cpu_freq;
     float CPE = cyc/length;
+#else  
+    float CPE;
+    {
+        void *arglist[7];
+        arglist[0] = (void *)for_1;
+        arglist[1] = (void *)&length;
+        arglist[2] = (void *)NULL;
+        arglist[3] = (void *)NULL;
+        arglist[4] = (void *)dest;
+        arglist[5] = (void *)u;
+        arglist[6] = (void *)v;
+        cyc = fcyc_v((test_funct_v)&func_wrapper, arglist);
+        CPE = cyc / length;       
+    }
+#endif      
     printf("For %ld-Dimensional Vector Dot Product. Cycle = %f CPE = %f\n", length, cyc, CPE);
     
     return cyc;    
@@ -108,6 +181,7 @@ float inner2(vec_ptr u, vec_ptr v, long length, data_t *dest)
     double cyc =0;
     data_t* v1 = u->data;
 
+#ifndef PERFORMANCE_LAB 
     clock_gettime(CLOCK_MONOTONIC, &start);
     for (long i = 0; i < getlength(u);  i++ ) 
     {
@@ -119,10 +193,24 @@ float inner2(vec_ptr u, vec_ptr v, long length, data_t *dest)
     struct timespec temp = diff(start, end);
     time_used = temp.tv_sec + (double) temp.tv_nsec / 1000000000.0;
 
-    MDebug("\t(%ld.%09ld\n", temp.tv_sec, temp.tv_nsec);
     //printf("Time = %f\n", time_used);
     cyc = time_used*cpu_freq;
     float CPE = cyc/length;
+#else   
+    float CPE;
+    {
+        void *arglist[7];
+        arglist[0] = (void *)for_2;
+        arglist[1] = (void *)&length;
+        arglist[2] = (void *)v1;
+        arglist[3] = (void *)NULL;
+        arglist[4] = (void *)dest;
+        arglist[5] = (void *)u;
+        arglist[6] = (void *)v;
+        cyc = fcyc_v((test_funct_v)&func_wrapper, arglist);
+        CPE = cyc / length;       
+    }
+#endif       
     printf("For %ld-Dimensional Vector Dot Product. Cycle = %f CPE = %f\n", length, cyc, CPE);
     
     return cyc;    
@@ -135,7 +223,8 @@ float inner3(vec_ptr u, vec_ptr v, long length, data_t *dest)
     double cyc =0;
     data_t *v1 = u->data;
     data_t *v2 = v->data;
-    
+
+#ifndef PERFORMANCE_LAB 
     clock_gettime(CLOCK_MONOTONIC, &start);
     for (long i = 0; i < getlength(u);  i++ ) 
     {
@@ -148,10 +237,24 @@ float inner3(vec_ptr u, vec_ptr v, long length, data_t *dest)
     struct timespec temp = diff(start, end);
     time_used = temp.tv_sec + (double) temp.tv_nsec / 1000000000.0;
 
-    MDebug("\t(%ld.%09ld\n", temp.tv_sec, temp.tv_nsec);
     //printf("Time = %f\n", time_used);
     cyc = time_used*cpu_freq;
     float CPE = cyc/length;
+#else   
+    float CPE;
+    {
+        void *arglist[7];
+        arglist[0] = (void *)for_3;
+        arglist[1] = (void *)&length;
+        arglist[2] = (void *)v1;
+        arglist[3] = (void *)v2;
+        arglist[4] = (void *)dest;
+        arglist[5] = (void *)u;
+        arglist[6] = (void *)v;
+        cyc = fcyc_v((test_funct_v)&func_wrapper, arglist);
+        CPE = cyc / length;       
+    }
+#endif     
     printf("For %ld-Dimensional Vector Dot Product. Cycle = %f CPE = %f\n", length, cyc, CPE);
     
     return cyc;    
@@ -164,7 +267,8 @@ float inner4(vec_ptr u, vec_ptr v, long length, data_t *dest)
     double cyc =0;
     data_t *v1 = u->data;
     data_t *v2 = v->data;
-    
+
+#ifndef PERFORMANCE_LAB
     clock_gettime(CLOCK_MONOTONIC, &start);
     for (long i = 0; i < length;  i++ ) {
       sum = sum + v1[i] + v2[i];
@@ -178,29 +282,45 @@ float inner4(vec_ptr u, vec_ptr v, long length, data_t *dest)
     //printf("Time = %f\n", time_used);
     cyc = time_used*cpu_freq;
     float CPE = cyc/length;
+#else   
+    float CPE;
+    {
+        void *arglist[7];
+        arglist[0] = (void *)for_4;
+        arglist[1] = (void *)&length;
+        arglist[2] = (void *)v1;
+        arglist[3] = (void *)v2;
+        arglist[4] = (void *)dest;
+        arglist[5] = (void *)NULL;
+        arglist[6] = (void *)NULL;
+        cyc = fcyc_v((test_funct_v)&func_wrapper, arglist);
+        CPE = cyc / length;       
+    }
+#endif  
+
     printf("For %ld-Dimensional Vector Dot Product. Cycle = %f CPE = %f\n", length, cyc, CPE);
     
     return cyc;    
 }
 
 int main(){
-
-    printf("pid: %d\n", getpid());      // yc modified
-    sleep(10);                          // yc modified
+    int loop = 1;
 
     cpu_freq = 1500000000;
   
     FILE *f = fopen("original.txt", "w");
-    for(unsigned long i = 1; i <= dimRange; i++ ){
-        unsigned long long  total_cycle  = 0;
-        for(unsigned long j = 1; j <= eachTimes; j++){
+    for(unsigned long i = 1; i <= dimRange && loop; i++ ){
+        unsigned long long  total_cycle  = 0, cyctmp=0;
+        for(unsigned long j = 1; j <= eachTimes && loop; j++){
             
             vec_ptr u = new_vec(i);
             vec_ptr v = new_vec(i);
             
             data_t *dest = malloc(sizeof(data_t));
             *dest = 0;            
-            total_cycle = total_cycle + (long)inner1( u, v, i, dest);
+            cyctmp = (long)inner1( u, v, i, dest);
+            // if(cyctmp>MAX_CYC) loop = 0;
+            total_cycle = total_cycle + cyctmp;
             free(u->data);
             free(v->data);
             free(u);        // yc modify
@@ -212,16 +332,18 @@ int main(){
     }
     fclose(f);
     f = fopen("optimize1.txt", "w");
-    for(unsigned long i = 1; i <= dimRange; i++ ){
-        unsigned long long  total_cycle  = 0;
-        for(unsigned long j = 1; j <= eachTimes; j++){
+    for(unsigned long i = 1; i <= dimRange && loop; i++ ){
+        unsigned long long  total_cycle  = 0, cyctmp=0;
+        for(unsigned long j = 1; j <= eachTimes && loop; j++){
             
             vec_ptr u = new_vec(i);
             vec_ptr v = new_vec(i);
             
             data_t *dest = malloc(sizeof(data_t));
             *dest = 0;            
-            total_cycle = total_cycle + (long)inner2( u, v, i, dest);
+            cyctmp = (long)inner2( u, v, i, dest);
+            // if(cyctmp>MAX_CYC) loop = 0;
+            total_cycle = total_cycle + cyctmp;
             free(u->data);
             free(v->data);
             free(u);        // yc modify
@@ -233,16 +355,18 @@ int main(){
     }
     fclose(f);
     f = fopen("optimize2.txt", "w");
-    for(unsigned long i = 1; i <= dimRange; i++ ){
-        unsigned long long  total_cycle  = 0;
-        for(unsigned long j = 1; j <= eachTimes; j++){
+    for(unsigned long i = 1; i <= dimRange && loop; i++ ){
+        unsigned long long  total_cycle  = 0, cyctmp=0;
+        for(unsigned long j = 1; j <= eachTimes && loop; j++){
             
             vec_ptr u = new_vec(i);
             vec_ptr v = new_vec(i);
             
             data_t *dest = malloc(sizeof(data_t));
             *dest = 0;            
-            total_cycle = total_cycle + (long)inner3( u, v, i, dest);
+            cyctmp=(long)inner3( u, v, i, dest);
+            // if(cyctmp>MAX_CYC) loop = 0;
+            total_cycle = total_cycle + cyctmp;
             free(u->data);
             free(v->data);
             free(u);        // yc modify
@@ -254,16 +378,18 @@ int main(){
     }
     fclose(f);
     f = fopen("optimize3.txt", "w");
-    for(unsigned long i = 1; i <= dimRange; i++ ){
-        unsigned long long  total_cycle  = 0;
-        for(unsigned long j = 1; j <= eachTimes; j++){
+    for(unsigned long i = 1; i <= dimRange && loop; i++ ){
+        unsigned long long  total_cycle  = 0, cyctmp=0;
+        for(unsigned long j = 1; j <= eachTimes && loop; j++){
             
             vec_ptr u = new_vec(i);
             vec_ptr v = new_vec(i);
             
             data_t *dest = malloc(sizeof(data_t));
             *dest = 0;            
-            total_cycle = total_cycle + (long)inner4( u, v, i, dest);
+            cyctmp = (long)inner4( u, v, i, dest);
+            // if(cyctmp>MAX_CYC) loop = 0;
+            total_cycle = total_cycle + cyctmp;            
             free(u->data);
             free(v->data);
             free(u);        // yc modify

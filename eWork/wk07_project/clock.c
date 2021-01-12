@@ -176,10 +176,11 @@ double get_comp_counter()
     times(&t);
     ticks = t.tms_utime - start_tick;
     ctime = time - ticks*cyc_per_tick;
-    /*
-      printf("Measured %.0f cycles.  Ticks = %d.  Corrected %.0f cycles\n",
-      time, (int) ticks, ctime);
-    */
+    if( ctime > MAX_CYC || ctime < 0) {
+      printf("Measured %.0f cycles.  Ticks = %d.  Corrected %.0f cycles, cyc_per_tick=%f\n",
+      time, (int) ticks, ctime, cyc_per_tick);
+      //ctime += MAX_CYC;
+    }
     return ctime;
 }
 

@@ -2,7 +2,7 @@
 #define CLOCK_H_
 
 /* Routines for using cycle counter */
-
+#define MAX_CYC 10000000000
 /* Start the counter */
 void start_counter();
 

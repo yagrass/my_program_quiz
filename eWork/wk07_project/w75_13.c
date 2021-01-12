@@ -8,7 +8,11 @@
 #define MDebug printf
 
 unsigned long eachTimes = 10; // test each vector dot product 10 times
+<<<<<<< HEAD
 unsigned long dimRange  = 1000; // 10000; // test dimension to 10000 
+=======
+unsigned long dimRange  = 10000; // 10000; // test dimension to 10000 
+>>>>>>> 40de3f9e916aad2c27b71aad3611321501bfd54d
 typedef int data_t;
 long cpu_freq;
 
